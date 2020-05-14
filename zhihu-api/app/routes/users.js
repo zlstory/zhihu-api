@@ -11,7 +11,7 @@ router.post('/', create)
 router.delete('/:id',del)
 
 // 改
-router.put('/:id', update)
+router.patch('/:id', update)
 
 // 查
 router.get('/:id', findById)

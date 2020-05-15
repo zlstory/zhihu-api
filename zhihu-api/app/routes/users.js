@@ -1,6 +1,10 @@
+const jwt = require('koa-jwt')
 const Router = require('koa-router')
-const router = new Router({ prefix: '/users'})
-const {find, create, findById, update, delete:del} = require('../controllers/users')
+const router = new Router({ prefix: '/users' })
+const { find, create, findById, update, delete: del, login, checkOwner } = require('../controllers/users')
+const { secret } = require('../config')
+
+const auth = jwt({ secret })
 
 router.get('/', find)
 
@@ -8,12 +12,15 @@ router.get('/', find)
 router.post('/', create)
 
 // 删
-router.delete('/:id',del)
+router.delete('/:id', auth, checkOwner, del)
 
 // 改
-router.patch('/:id', update)
+router.patch('/:id', auth, checkOwner, update)
 
 // 查
 router.get('/:id', findById)
+
+// 登录
+router.post('/login', login)
 
 module.exports = router;
